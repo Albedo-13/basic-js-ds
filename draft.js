@@ -7,51 +7,43 @@ class ListNode {
     }
 }
 
-function convertArrayToList(arr) {
-    return arr.reverse().reduce((acc, cur) => {
-        if (acc) {
-            const node = new ListNode(cur);
-            node.next = acc;
-            return node;
-        }
-
-        return new ListNode(cur);
-    }, null);
-}
-
-
-function removeKFromList(l, k) {
-    let head = l;
-    if (l.value === k) {
-        l = l.next;
-        head = l;
-        return removeKFromList(l, k);
+class Queue {
+    constructor() {
+        this.head = new ListNode();
     }
 
-    let current = l;
-    while (current.next) {
-        if (current.next.value === k) {
-            current.next = current.next.next;
-        }
-        current = current.next;
+    getUnderlyingList() {
+        return this.head;
     }
 
-    return head;
+    enqueue(value) {
+        if (!this.head.value) {
+            this.head.value = value;
+            return;
+        }
 
-    // let firstNode = new ListNode(firstNonKValue);
-    // let currentNode = firstNode;
+        let current = this.head;
+        while (current.value) {
+            if (!current.next) {
+                current.next = new ListNode();
+                current.next.value = value;
+                return;
+            }
+            current = current.next;
+        }
+    }
 
-    // // console.log(firstNonKValue, firstNonKValueIndex);
-    // for (let i = firstNonKValueIndex + 1; i < l.length; i++) {
-    //     if (l[i] === k) {
-    //         continue;
-    //     }
-    //     currentNode.next = new ListNode(l[i]);
-    //     currentNode = currentNode.next;
-    // }
-    // return firstNode;
+    dequeue() {
+        const first = this.head.value;
+        this.head = this.head.next;
+        return first;
+    }
 }
 
-console.log(removeKFromList(convertArrayToList([3, 1, 2, 3, 4, 5]), 3));
-
-
+const queue = new Queue();
+queue.enqueue(5);
+queue.enqueue(6);
+queue.enqueue(7);
+console.log(queue.head);
+// console.log(queue.dequeue()); // 5
+// console.log(queue.dequeue()); // 6
